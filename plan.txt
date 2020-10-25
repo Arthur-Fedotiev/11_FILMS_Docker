@@ -1,0 +1,265 @@
+1. Работа с формами
+   Constrolled и uncontrolled элементы форм
+
+- cоздать компонент (class) pages/FilmsPage/components/FilmForm.jsx
+  HTML разметка находится в файле Материалы_слушателям/HTML/form1.html 
+- подключить форму в компонент App 
+- реализовать методы handleSubmit, handleStringChange (generic onChange handler)
+
+===================================================
+2. Универсальные обработчики события onChange
+- создаем компонент pages/FilmsPage/components/FilmForm.jsx
+
+
+=================================== ЗАДАНИЕ СЛУШАТЕЛЯМ:
+- добавить в компонент pages/FilmsPage/components/FilmForm.jsx  state и поля
+  для description, director, img, price, duration, featured
+  согласно кода в макете Материалы_слушателям/HTML/form1.html
+  
+- обратить внимание на типы полей: 
+    number - не должно быть отрицательных чисел 
+    price  - это может быть дробное число, не должно быть отрицательных чисел
+- реализовать соответствующие обработчики событий
+    handleNumberChange, handleCheckboxChange
+
+==================================================================
+
+3. Работа с полем Checkboxes
+=================================== ЗАДАНИЕ СЛУШАТЕЛЯМ:
+- !!!! создать отдельный branch для выполнения задания
+- компонент pages/FilmsPage/components/FilmForm.jsx заменить 
+  файлом из каталога Материалы_слушателям/Lesson_2/FilmForm.jsx 
+
+====== TASK 1 
+Используя tags реализовать контролируемый элемент формы
+группу checkboxes Tags 
+В state использовать свойство tags: []
+---------------------------------------- HTML
+<div class="grouped fields">
+    <label>Tags</label>
+     
+    <div class="field">  
+      <div class="ui checkbox">
+         <input type="checkbox" id="tag1">
+         <label for="tag1">Tag 1</label>
+      </div>
+   </div>
+
+ </div>
+-------------------------------------------------
+
+
+====== TASK 2 
+Используя genres реализовать контролируемый элемент формы
+группу radio buttons Genres
+В state использовать свойство genre: ''
+--------------------------------------------------- HTML
+<div class="grouped fields">
+    <label>Genres</label>
+
+    <div class="field">
+      <div class="ui radio checkbox">
+        <input type="radio" name="example2" checked="checked">
+        <label>Genre 1</label>
+      </div>
+    </div>
+
+ </div>   
+---------------------------------------------------
+
+
+====== TASK 3 
+Используя genres  реализовать контролируемый элемент формы select
+В state использовать свойство select: ''
+--------------------------------------------HTML
+<select class="ui dropdown">
+  <option value="1111">tag 1</option>
+</select>
+--------------------------------------------
+
+
+====== TASK  4
+Используя genres  реализовать контролируемый элемент
+формы - multiple select
+В state использовать свойство multiSelect: []
+
+-------------------------------------------- HTML
+<select multiple size="SIZE">
+  <option value="1111">tag 1</option>
+</select>
+--------------------------------------------
+==================================================================
+
+4. Подключение иконки  для изображения
+- conditional render изображения (http://via.placeholder.com/250x250)
+/img/glass.jpg
+/img/magic.jpg
+
+4.1 Создание поля для выбора файла изображения
+
+===================================================
+5. Валидация формы
+=================================== ЗАДАНИЕ СЛУШАТЕЛЯМ:
+Создать компонент   components/FormMessage.jsx
+ который будет показывать в форме ошибки.
+Цвет текста сообщений передается через props type 
+который может иметь значения 
+  error - #9a3f38 или  info -  "#6597a7"
+
+// --------------------------------------- HTML 
+<div style="color: #9a3f38">Message's text (error or success)</div>
+---------------------------------------------//
+
+==================================================================
+
+- в форме элемент с классом "filed" может иметь класс "field error"
+  если есть ошибка
+- валидация - все поля не должны быть пустыми,
+   а поля duration, price не должны быть меньше или равны 0
+- валидация проводится в методе handleSubmit
+===================================================
+
+
+===================================================
+
+6.Создаем компонент components/TopNavigation.jsx
+  html код из HTML/form.html
+    <!--  TopNavigation -->
+     ...
+   <!-- END  TopNavigation -->
+
+Нам нужно отображать форму при клике на ссылку  Add new film
+- в компоненте App выводим TopNavigation
+- в state App добавляем свойство showAddForm
+- создаем 2 метода  showForm, hideForm которые передаются в TopNavigation, FilmForm соответственно
+- в App В зависимости от состояния showAddForm вычисляем класс, дял определения 
+   количество колонок сетки 10 или 16
+ 
+-------------------------------- HTML
+<div class="ui stackable grid">
+
+// если есть форма
+   <div class="six wide column">
+         // FilmForm
+    </div>
+
+ <div class="N wide column">
+       // FilmsList
+  </div>
+</div>
+--------------------------------
+
+
+7. Создание нового фильма
+
+Компонент FilmForm ничего не должен знать о бизнес-логике CRUD
+В компонент App добавляем метод saveFilm и  передаем его
+через props в компонент FilmForm
+
+===================================================
+8. Подготовка к редактированию фильма
+
+8.1  ---- в App
+- Добавляем в state свойство  selectedFilm: {}
+   и через props film  передаем его  в компонент FilmForm
+
+- Добавляем  метод selectFilmForEdit и передаем его через
+   FilmContext.Provider для компонента FilmСard
+
+- в компонентe FilmCard из контекста получаем метод selectFilmForEdit 
+   и вешаем onClick на кнопку редактирования
+
+8.2  ---- в App
+- Корректируем  методы hideForm и  showForm - в них надо чистить
+   selectedFilm
+
+- добавляем методы  addFilm, updateFilm
+
+- изменяем метод saveFilm который будет вызывать addFilm или updateFilm
+  в зависимости от того есть ли film._id
+
+
+------------------------------------------------------------------ 
+
+8.3  ---- в FilmForm
+- в state компонента FilmForm добавим _id: null
+Если будет передан фильм для редактирования, то у него будет _id
+
+Логика
+- если при загрузке компонента в props пришел  _id, 
+  то фильм редактируется =>  пишем его в  data
+
+- если при обновлении в props пришел  _id
+   и он не равен текущему _id, то фильм редактируется,
+   пишем его в  data
+
+- если  при обновлении в props нет  _id,  и текущий _id не null,
+   то фильм создается  - data  = initialData
+
+- во всех других случаях state не изменяется
+
+
+
+======================================== snippet 9 
+=================================== ЗАДАНИЕ СЛУШАТЕЛЯМ:
+====== Действия
+1. Rerender компонента  FilmsList
+- открыть фильм для редактирования 
+- открыть profiler 
+- переключить фильм  для редактирования
+- остановить profiler   
+ВОПРОС - почему компонент FilmList rerender ? 
+
+2. Rerender всех  FilmCard
+- открыть фильм для редактирования 
+- открыть profiler 
+- переключить фильм  для редактирования
+- остановить profiler  
+ВОПРОС - почему все 3  компонента  FilmCard rerender ?
+
+Задача - оптимизировать код так, чтобы не было лишних rerender компонента FilmCart  
+ 
+Подсказка 
+https://github.com/facebook/react/issues/15156#issuecomment-474590693
+==================================================================
+
+
+======================================= snippet 10
+10. Удаление фильма
+ - добавляем метод deleteFilm в App.js
+ - в компоненте FilmCard.js реализуем логику подтверждения удаления фильма
+--------------------------------------------- HTML - confirm
+<div class="ui two buttons">
+   <span  class="ui red basic button">
+      <i class="ui icon check" /> YES
+    </span>
+    <span class="ui grey basic button">
+      <i class="ui icon close" /> NO
+    </span>
+</div>
+------------------------------
+или
+--------------------------------
+<div class="ui two buttons">
+   <span  class="ui green basic button">
+      <i className="ui icon edit" />
+    </span>
+    <span class="ui red basic button">
+      <i class="ui icon trash" />
+    </span>
+</div>
+
+---------------------------------------------
+
+
+*********************************************************************
+*********************************************************************
+ДОМАШНЕЕ ЗАДАНИЕ
+
+1. Создать компонент  - форму регистрации пользователя  
+          pages/RegistrationPage/components/RegistrationForm.jsx
+  Элементы поля - email, password, cofirm_password, button OK, button Cancel
+
+2. Создать компонент  - форму логин пользователя
+        pages/LoginPage/components/LoginForm.js
+  Элементы поля - email, password, button OK, button Cancel
