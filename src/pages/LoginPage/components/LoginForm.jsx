@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import isEmail from "validator/lib/isEmail";
 import FormMessage from "components/FormMessage";
 
 const initialData = {
@@ -19,23 +20,24 @@ class LoginForm extends React.Component {
       errors: {...this.state.errors, [e.target.name]: ""},
     });
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
     const errors = this.validate(this.state.data);
     this.setState({errors});
     if (Object.keys(errors).length === 0) {
       this.setState({loading: true});
-      this.props
-        .submit(this.state.data)
-        .catch(error =>
-          this.setState({errors: error.response.data.errors, loading: false}),
-        );
+      try {
+        await this.props.submit(this.state.data);
+        this.setState({loading: false});
+      } catch (error) {
+        this.setState({errors: error.response.data.errors, loading: false});
+      }
     }
   };
 
   validate(data) {
     const errors = {};
-    if (!data.email) errors.email = "Email cannot be blank";
+    if (!isEmail(data.email)) errors.email = "Email cannot be blank";
     if (!data.password) errors.password = "Password cannot be blank";
 
     return errors;
@@ -44,6 +46,10 @@ class LoginForm extends React.Component {
   render() {
     const {data, errors, loading} = this.state;
     const cls = loading ? "ui form loading" : "ui form";
+    if (loading) {
+      return <h1>Loading</h1>;
+    }
+
     return (
       <form className={cls} onSubmit={this.handleSubmit}>
         <div className={errors.email ? "error field" : "field"}>
@@ -60,7 +66,7 @@ class LoginForm extends React.Component {
         </div>
 
         <div className={errors.password ? "error field" : "field"}>
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
             value={data.password}
             onChange={this.handleChange}

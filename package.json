@@ -4,9 +4,6 @@
   "private": true,
   "proxy": "http://localhost:4000",
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "axios": "^0.20.0",
     "jwt-decode": "^3.0.0",
     "lodash": "^4.17.20",
@@ -43,7 +40,18 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^7.26.3",
+    "@testing-library/jest-dom": "^5.11.5",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/react-hooks": "^3.4.2",
+    "@testing-library/user-event": "^7.2.1",
     "eslint-config-prettier": "^6.12.0",
-    "prettier": "^2.1.2"
+    "faker": "^5.1.0",
+    "jest-axe": "^4.0.0",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "jest-in-case": "^1.0.2",
+    "msw": "^0.21.3",
+    "prettier": "^2.1.2",
+    "react-test-renderer": "^17.0.1"
   }
 }
